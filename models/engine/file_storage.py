@@ -2,7 +2,7 @@
 """This is the file storage class for AirBnB"""
 import json
 import shlex
-from models.user import User  # Add the import for User class
+from models.user import User
 from models.base_model import BaseModel
 from models.state import State
 from models.city import City
@@ -64,10 +64,18 @@ class FileStorage:
                 data = json.load(f)
                 for key, value in data.items():
                     class_name = value["__class__"]
-                    if class_name == "User":  # Check if the class is User
+                    if class_name == "User":
                         value = User(**value)
-                    else:
-                        value = eval(class_name)(**value)
+                    elif class_name == "Place":
+                        value = Place(**value)
+                    elif class_name == "State":
+                        value = State(**value)
+                    elif class_name == "City":
+                        value = City(**value)
+                    elif class_name == "Amenity":
+                        value = Amenity(**value)
+                    elif class_name == "Review":
+                        value = Review(**value)
                     self.__objects[key] = value
         except FileNotFoundError:
             pass
